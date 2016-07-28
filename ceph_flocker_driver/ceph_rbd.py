@@ -118,7 +118,7 @@ class CephRBDBlockDeviceAPI(object):
         """
         maps = dict()
         showmapped_output = self._check_output(
-            [b"rbd", self._pool, b"showmapped"]).strip()
+            [b"rbd", b"showmapped"]).strip()
         if not len(showmapped_output):
             return maps
         u_showmapped_output = showmapped_output.decode("utf-8")
