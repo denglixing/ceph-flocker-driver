@@ -328,3 +328,4 @@ def rbd_from_configuration(
     ioctx = cluster.open_ioctx(storage_pool)
 
     return CephRBDBlockDeviceAPI(cluster, ioctx, storage_pool, check_output)
+
