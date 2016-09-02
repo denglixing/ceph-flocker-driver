@@ -194,8 +194,8 @@ class CephRBDBlockDeviceAPI(object):
         ascii_blockdevice_id = blockdevice_id.encode()
         self._check_exists(ascii_blockdevice_id)
         #rbd_inst = rbd.RBD()
-		#rbd_inst.remove(self._ioctx, ascii_blockdevice_id)
-		fh = open("/tmp/flocker_debug.log", "a")
+        #rbd_inst.remove(self._ioctx, ascii_blockdevice_id)
+        fh = open("/tmp/flocker_debug.log", "a")
         fh.write(str(datetime.datetime.now()) + ": " + "attempt to destroy volume "+ascii_blockdevice_id + "\n")
         fh.close
 
