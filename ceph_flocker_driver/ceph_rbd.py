@@ -17,6 +17,7 @@ from uuid import UUID
 # Conditionally import Ceph modules so that tests can be run without them.
 import rados
 import rbd
+import datetime
 
 from subprocess import check_output
 
@@ -192,8 +193,11 @@ class CephRBDBlockDeviceAPI(object):
         """
         ascii_blockdevice_id = blockdevice_id.encode()
         self._check_exists(ascii_blockdevice_id)
-        rbd_inst = rbd.RBD()
-        rbd_inst.remove(self._ioctx, ascii_blockdevice_id)
+        #rbd_inst = rbd.RBD()
+		#rbd_inst.remove(self._ioctx, ascii_blockdevice_id)
+		fh = open("/tmp/flocker_debug.log", "a")
+        fh.write(str(datetime.datetime.now()) + ": " + "attempt to destroy volume "+ascii_blockdevice_id + "\n")
+        fh.close
 
     def attach_volume(self, blockdevice_id, attach_to):
         """
