@@ -163,7 +163,7 @@ class CephRBDBlockDeviceAPI(object):
         """
         return self._check_output([b"hostname", b"-s"]).strip().decode("utf8")
 
-    def create_volume(self, dataset_id, size):
+    def create_volume(self, dataset_id, size,from_name):
         """
         Create a new volume as an RBD image.
 
@@ -177,7 +177,11 @@ class CephRBDBlockDeviceAPI(object):
         all_images = rbd_inst.list(self._ioctx)
         if blockdevice_id in all_images:
             raise ImageExists(blockdevice_id)
-        rbd_inst.create(self._ioctx, _rbd_blockdevice_id(blockdevice_id), size, old_format=False, features=1)
+        if from_name is not None:
+            rbd_image = rbd.Image(self._ioctx, _rbd_blockdevice_id(from_name))
+            rbd_image.cp(self._ioctx, _rbd_blockdevice_id(blockdevice_id))
+        else:
+            rbd_inst.create(self._ioctx, _rbd_blockdevice_id(blockdevice_id), size, old_format=False, features=1)
         return BlockDeviceVolume(
             blockdevice_id=blockdevice_id, size=size, dataset_id=dataset_id)
 
