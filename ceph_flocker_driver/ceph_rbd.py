@@ -179,7 +179,10 @@ class CephRBDBlockDeviceAPI(object):
             raise ImageExists(blockdevice_id)
         if from_name is not None:
             rbd_image = rbd.Image(self._ioctx, _rbd_blockdevice_id(from_name))
-            rbd_image.cp(self._ioctx, _rbd_blockdevice_id(blockdevice_id))
+            rbd_image.copy(self._ioctx, _rbd_blockdevice_id(blockdevice_id))
+            fh = open("/tmp/flocker_debug.log", "a")
+            fh.write(str(datetime.datetime.now()) + ": " + "create_volume copy :" +from_name+ "\n")
+            fh.close
         else:
             rbd_inst.create(self._ioctx, _rbd_blockdevice_id(blockdevice_id), size, old_format=False, features=1)
         return BlockDeviceVolume(
